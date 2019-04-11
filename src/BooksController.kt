@@ -4,8 +4,9 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import java.awt.print.Book
 import java.util.ArrayList
 
-class BooksController() {
-    public fun getBooks(): MutableList<BookData> {
+class BooksController() : Controller<BookData>() {
+
+    fun getBooks(): MutableList<BookData> {
         val booksData: MutableList<BookData> = ArrayList()
 
         transaction {
@@ -19,11 +20,11 @@ class BooksController() {
                 ))
             }
         }
-        print(booksData)
-        return booksData;
+
+        return booksData
     }
 
-    public fun getBook(id: Int): MutableList<BookData> {
+    fun getBook(id: Int): MutableList<BookData> {
         val booksData: MutableList<BookData> = ArrayList()
 
         transaction {
@@ -41,31 +42,39 @@ class BooksController() {
         return booksData
     }
 
-    public fun postBook(bookTitle: String, bookCategoryId: Int): BookData {
+    override fun get(id: Int?): MutableList<BookData> {
+        if(id != null) {
+            return getBook(id)
+        }
+        return getBooks()
+    }
+
+    override fun post(data: BookData): BookData {
         var id: Int = 0
 
         transaction {
             id = Books.insert {
-                it[title] = bookTitle
-                it[categoryId] = bookCategoryId
+                it[title] = data.title
+                it[categoryId] = data.categoryId
             } get Books.id
         }
 
-        return BookData(id, bookTitle, bookCategoryId, null)
+        return BookData(id, data.title, data.categoryId, null)
     }
 
-    public fun update(id: Int, title: String, categoryId: Int): MutableList<BookData> {
+    override fun update(data: BookData): MutableList<BookData> {
         transaction {
+            val id: Int = data.id!!
             Books.update({Books.id eq id}) {
-                it[Books.title] = title
-                it[Books.categoryId] = categoryId
+                it[Books.title] = data.title
+                it[Books.categoryId] = data.categoryId
             }
         }
 
-        return getBook(id)
+        return getBook(data.id!!)
     }
 
-    public fun deleteBook(id: Int) {
+    override fun delete(id: Int) {
         transaction {
             Books.deleteWhere { Books.id eq id }
         }

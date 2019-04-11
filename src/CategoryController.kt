@@ -40,10 +40,4 @@ class CategoryController() {
 
         return CategoryData(id, categoryString)
     }
-
-    public fun deleteBook(id: Int) {
-        transaction {
-            Books.deleteWhere { Books.id eq id }
-        }
-    }
 }

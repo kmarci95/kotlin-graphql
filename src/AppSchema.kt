@@ -20,6 +20,22 @@ class AppSchema(
             resolver { id: Int -> booksController.getBook(id) }
         }
 
+        mutation("createBook") {
+            description = "Creates book with attributes"
+            resolver { title: String, categoryId: Int ->
+                val book = BookData(null, title, categoryId, null)
+                booksController.post(book)
+             }
+        }
+
+        mutation("updateBook") {
+            description = "Updates Book"
+            resolver { id: Int, title: String, categoryId: Int ->
+                val book = BookData(id, title, categoryId, null)
+                booksController.update(book)
+            }
+        }
+
         query("categories") {
             resolver { -> categoryController.getCategories() }
         }
@@ -27,16 +43,6 @@ class AppSchema(
         mutation("createCategory") {
             description = "Creates a category"
             resolver { category: String -> categoryController.postCategory(category) }
-        }
-
-        mutation("createBook") {
-            description = "Creates book with attributes"
-            resolver { title: String, categoryId: Int -> booksController.postBook(title, categoryId) }
-        }
-
-        mutation("updateBook") {
-            description = "Updates Book"
-            resolver { id: Int, title: String, categoryId: Int -> booksController.update(id, title, categoryId) }
         }
 
         type<BookData>()

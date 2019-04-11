@@ -58,29 +58,29 @@ fun Application.module(testing: Boolean = false) {
         get("/") {
             call.respondText("HELLO WORLD!", contentType = ContentType.Text.Plain)
         }
-
-        get("/books") {
-            call.respond(booksController.getBooks())
-        }
-
-        get("/books/{id}") {
-            val id = call.parameters["id"]!!.toInt()
-            call.respond(booksController.getBook(id))
-        }
-
-        post("/books") {
-            val postParameters: Parameters = call.receiveParameters()
-            val bookTitle: String = postParameters["title"] as String
-            val bookCategoryId: Int = postParameters["categoryId"] as Int
-
-            call.respond(booksController.postBook(bookTitle, bookCategoryId))
-        }
-
-        delete("/books/{id}") {
-            val id = call.parameters["id"]!!.toInt()
-            booksController.deleteBook(id)
-            call.response.status(HttpStatusCode.OK)
-        }
+//
+//        get("/books") {
+//            call.respond(booksController.getBooks())
+//        }
+//
+//        get("/books/{id}") {
+//            val id = call.parameters["id"]!!.toInt()
+//            call.respond(booksController.getBook(id))
+//        }
+//
+//        post("/books") {
+//            val postParameters: Parameters = call.receiveParameters()
+//            val bookTitle: String = postParameters["title"] as String
+//            val bookCategoryId: Int = postParameters["categoryId"] as Int
+//
+//            call.respond(booksController.postBook(bookTitle, bookCategoryId))
+//        }
+//
+//        delete("/books/{id}") {
+//            val id = call.parameters["id"]!!.toInt()
+//            booksController.deleteBook(id)
+//            call.response.status(HttpStatusCode.OK)
+//        }
     }
 }
 
