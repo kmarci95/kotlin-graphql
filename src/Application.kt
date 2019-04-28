@@ -12,6 +12,8 @@ import io.ktor.response.*
 import BooksController
 import CategoryController
 import AppSchema
+import UsersController
+import OrdersController
 
 fun main(args: Array<String>): Unit = io.ktor.server.netty.EngineMain.main(args)
 
@@ -45,7 +47,9 @@ fun Application.module(testing: Boolean = false) {
 
     val booksController = BooksController()
     val categoryController = CategoryController()
-    val appSchema = AppSchema(booksController, categoryController)
+    val usersController = UsersController()
+    val ordersController = OrdersController()
+    val appSchema = AppSchema(booksController, categoryController, usersController, ordersController)
 
     routing {
         post("/graphql") {

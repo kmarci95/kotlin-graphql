@@ -19,18 +19,6 @@ class CategoryController() {
         return categoriesData;
     }
 
-    public fun getBook(id: Int): MutableList<BookData> {
-        val booksData: MutableList<BookData> = ArrayList()
-
-        transaction {
-            Books.select{Books.id eq id}.forEach {
-                booksData.add(BookData(it[Books.id], it[Books.title], it[Books.categoryId]))
-            }
-        }
-
-        return booksData
-    }
-
     public fun postCategory(categoryString: String): CategoryData {
         var id: Int = 0
 
